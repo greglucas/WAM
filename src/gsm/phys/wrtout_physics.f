@@ -375,7 +375,8 @@
 !!
       IPRINT = 0
 !
-      cfile = 'SFCR'
+      write(cfhour,'(i0.2)') nint(fhour)
+      cfile = 'SFCR.F'//cfhour
 !      print *,' cfile=',cfile,'ens_nam=',ens_nam(1:nfill(ens_nam))
 !
 !      print *,' in rest write fhour=',fhour,

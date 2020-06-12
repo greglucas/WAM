@@ -3,8 +3,8 @@
 
       contains
       SUBROUTINE grid_collect_ipe(wwg,zzg,uug,vvg,ttg,rqg,n2g,
-     &             global_lats_a,lonsperlat, lats_nodes_a, kdt, deltim,
-     &             restart_step, den, gmol)
+     &             global_lats_a,lonsperlat, lats_nodes_a, kdt,
+     &             deltim, restart_step, den, gmol)
 !!
 !! Revision history:
 !  2007           Henry Juang, original code
@@ -134,6 +134,7 @@
       integer lenrec, ndig, nfill
       real    deltim
       logical nc_out, restart_step
+      character (5) :: cfhour
 !
       ioproc = nodes_comp - 1
 
@@ -198,9 +199,10 @@
           call write_nc(kdt.eq.0 .or. restart_step,
      &                   lonf, latg, ngrids_gg_ipe,buff_final)
         else
-          PRINT*, 'write out WAM IPE CPL RST file, kdt=', kdt
-          rewind 181
+          write(cfhour,'(i0.2)') nint(kdt*deltim/3600.)
+          open(181,filename='WAMIPER.F'//cfhour,form='unformatted')
           WRITE(181) buff_final
+          close(181)
         END IF
 
         deallocate(buff_final)

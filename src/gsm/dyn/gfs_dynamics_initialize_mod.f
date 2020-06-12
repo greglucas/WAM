@@ -708,24 +708,6 @@
 !              ' sig_ini2=',gis_dyn%nam_gfs_dyn%sig_ini2 
       gis_dyn%pdryini = 0.0
 
-      if(lsidea) then
-        if(wam_ipe_cpl_rst_input ) then
-! Add the open lines for the WAM-IPE coupling restart file. WY.
-!--------------------------------------------------------------
-! For reading in restart file at the begining of the restart run.
-!----------------------------------------------------------------
-          open(unit=180, file='WAM_IPE_RST_rd', form='unformatted')
-          rewind 180
-        end if
-
-        if(wam_ipe_cpl_rst_output ) then
-! For writing out the restart file for the next restart WAM-IPE run.
-!-------------------------------------------------------------------
-          open(unit=181, file='WAM_IPE_RST_wrt', form='unformatted')
-          rewind 181
-        end if
-      end if
-
       if (me == 0) then
         print *,' grid_ini=',trim(gis_dyn%nam_gfs_dyn%grid_ini),'fhrot=',fhrot, &
         'fhini=',fhini,'restart_run=',gis_dyn%restart_run

@@ -512,6 +512,7 @@ c then (only if liope)  flux state.
       real(kind=kind_evod) fhour, pdryini
       character (len=*)  :: ens_nam
       character (255)    :: filename
+      character (5)      :: cfhour
 !
       integer              idate(4), igen
       INTEGER              LS_NODE (LS_DIM*3)
@@ -563,7 +564,8 @@ c then (only if liope)  flux state.
 ! n-1 time step spectral file
 !
         step = -1
-        filename = 'SIGR1'
+        write(cfhour,'(i0.2)') nint(fhour)
+        filename = 'SIGR1.F'//cfhour
 
         if( .not. ndslfv ) then
             CALL TWRITES_rst(filename,ioproc,FHOUR,idate,
@@ -591,7 +593,7 @@ c then (only if liope)  flux state.
 ! n time step spectral file
 !
         step = 0
-        filename = 'SIGR2'
+        filename = 'SIGR2.F'//cfhour
       
         if( .not. ndslfv ) then
             CALL TWRITES_rst(filename,ioproc,FHOUR,idate,
@@ -617,13 +619,13 @@ c then (only if liope)  flux state.
      &                             trim(filename)
       IF(lsidea) THEN
 
-        CALL TWRITES_rst_idea('fort.1051',ioproc,FHOUR,idate,
+        CALL TWRITES_rst_idea('WAMR.F'//cfhour,ioproc,FHOUR,idate,
      &              SI,LS_NODES,MAX_LS_NODES,trie_ls,trio_ls)
       END IF
 
 ! n-1 time step grid file
 !
-       filename = 'GRDR1'
+       filename = 'GRDR1.F'//cfhour
 
        CALL TWRITEG_rst(filename,ioproc,FHOUR,idate,
      X                SI,pdryini,global_lats_a,lonsperlat,lats_nodes_a,
@@ -637,7 +639,7 @@ c then (only if liope)  flux state.
 ! n time step grid file
 !
 
-      filename = 'GRDR2'
+      filename = 'GRDR2.F'//cfhour
       CALL TWRITEG_rst(filename,ioproc,FHOUR,idate,
      X                SI,pdryini,global_lats_a,lonsperlat,lats_nodes_a,
      &                grid_gr(1,1,g_q),

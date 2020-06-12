@@ -222,7 +222,9 @@
      &                               2, lotls, nodes ),
      &              stat=ierr )
          trieo_ls_nodes = 0.0
+         open(1051,filename='WAMR',form='unformatted')
          READ(1051) trieo_ls_nodes
+         close(1051)
        else
          allocate (trieo_ls_nodes(1, 1, 1, 1), stat = ierr)
       endif

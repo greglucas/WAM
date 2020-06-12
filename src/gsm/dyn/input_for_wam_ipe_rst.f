@@ -49,9 +49,10 @@
 ! The following is to read in the interface restart file for WAM-IPE
 ! coupling restart run.
 !-------------------------------------------------------------------
-        rewind 180
-        READ(180) buff_final
-        
+        open(180,filename='WAMIPER',form='unformatted')
+        read(180) buff_final
+        close(180)
+
         DO k = 1, ngrids_gg_ipe
           ipt_lats = 1
           DO node = 1, nodes_comp
