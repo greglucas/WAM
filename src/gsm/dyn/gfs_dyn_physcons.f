@@ -91,6 +91,7 @@
 ! real(kind=kind_phys),parameter:: con_avgd   =6.02214e23     ! avogadro constant   (1/mol) -aer
   real(kind=kind_phys),parameter:: con_avgd   =6.0221415e23   ! avogadro constant   (1/mol) -nist(2002)
   real(kind=kind_phys),parameter:: con_gasv   =22413.996e-6   ! vol of ideal gas at 273.15k, 101.325kpa (m3/mol) -nist(2002)
+  real(kind=kind_phys),parameter:: con_atom   =1.66e-27       ! atomic mass unit    (kg)
 ! real(kind=kind_phys),parameter:: con_amd    =28.970         ! molecular wght of dry air (g/mol)
   real(kind=kind_phys),parameter:: con_amd    =28.9644        ! molecular wght of dry air (g/mol)
   real(kind=kind_phys),parameter:: con_amw    =18.0154        ! molecular wght of water vapor (g/mol)

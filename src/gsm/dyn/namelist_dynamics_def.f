@@ -14,13 +14,15 @@
 !                 restart run,
 !                 iv)  add NC_output and DELOUT_NC for outputting the
 !                      NetCDF diagnostic files.
-!
+!02 Jul 2020 :    Zhuxiao Li  add n2_target as a namelist variable for
+!                 O/N2 calculation criteria change
       use gfs_dyn_machine
       implicit none
       
       integer nsres,nsout,igen,ngptc,levwgt(2),k2o,nsout_hf
       integer dfilevs,nsskeb
       integer DELOUT_NC
+      real(kind=kind_evod) n2_target
       real(kind=kind_evod) fhrot,fhmax,fhout,fhres,fhini,fhdfi
       real(kind=kind_evod) filta,ref_temp,sl_epsln,cdamp(2)
      &,                    ref_pres,fhout_hf,fhmax_hf

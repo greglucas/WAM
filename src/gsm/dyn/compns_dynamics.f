@@ -62,6 +62,9 @@
 !               ii)  add wam_ipe_cpl_rst_output for WAM-IPE coupling restart run,
 !               iii) add NC_output and DELOUT_NC for outputing the
 !                    NetCDF diagnostic files.
+!  2020-07-02   Zhuxiao Li  add n2_target for O/N2 criteria change in
+!                           namelist.
+!
 !
 ! Usage:    call compns(deltim,
 !    &                  fhout,fhres,
@@ -137,7 +140,8 @@ c - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      & wam_ipe_cpl_rst_output, wam_ipe_cpl_rst_input,
 ! For outputing the NetCDF diagnostic files.
 !-------------------------------------------
-     & NC_output, DELOUT_NC, nc_fields
+     & NC_output, DELOUT_NC, nc_fields,
+     & n2_target
 
 !
       fhmax      = 0
@@ -287,6 +291,7 @@ c - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       NC_output           = .false.
       nc_fields           = .true.
       DELOUT_NC           = 3600
+      n2_target           = 2.e21
 !
 !  iau parameters
        iau              = .false.

@@ -34,7 +34,8 @@
      &,                           re => con_rerth, g0 => con_g
      &,                           cpd => con_cp, rkap => con_rocp
      &,                           con_amw, con_rgas, con_amo2, con_avgd
-     &,                           con_amo3, con_boltz
+     &,                           con_amo3, con_boltz, con_atom
+!      use namelist_dynamics_def,only: n2_target  ! n2 total reference, for O/N2 calculation
       use do_dynamics_mod
       use gfs_dyn_tracer_const, only: cpi
       use gci,                  only: grid_collect_ipe
@@ -85,6 +86,14 @@
       REAL(KIND=KIND_GRID) tfac(lonf, levs), sumq(lonf, levs)
       REAL(KIND=KIND_GRID) tx1
       REAL(KIND=KIND_GRID), PARAMETER :: qmin=1.e-10
+!!    for O/N2 calculation
+!      REAL(KIND=KIND_GRID), PARAMETER :: n2_target=2.e+21
+      REAL(KIND=KIND_GRID), PARAMETER :: grav_150k=9.5
+      REAL(KIND=KIND_GRID)  o_target
+      REAL(KIND=KIND_GRID)  n2_levr
+      REAL(KIND=KIND_GRID)  o_sht(levs), n2_sht(levs)
+      REAL(KIND=KIND_GRID)  o_total(levs), n2_total(levs)
+      REAL(KIND=KIND_GRID), allocatable :: o_n2(:,:)
 !!     
       REAL (KIND=KIND_grid), parameter :: cons0=0.0d0, cons1=1.0d0,
      &                                    cons2=2.0d0, cons0p5 = 0.5d0,
@@ -149,6 +158,19 @@
          ALLOCATE(ps(lonf,lats_node_a))
          ps = 0.0
       endif
+
+!----for O/N2 calcalatin--------
+
+      IF(.NOT. ALLOCATED(o_n2)) then
+         ALLOCATE(o_n2(lonf,lats_node_a))
+         o_n2 = 0.0
+      endif
+
+      o_sht=0.0
+      n2_sht=0.0
+      o_total=0.0
+      n2_total=0.0
+ 
 !----------------------------------------------------------
       if (me < num_pes_fcst) then
         levs3 = levs * 3
@@ -335,9 +357,42 @@
              gmol(i, lan, k) = mmm ! unit ~ g/mol (amu).
            end do
          end do
-       enddo
-!
+
+! calculate the O/N2
+!----------------------------------
+         do i= 1, lons_lat
+            do k = 81, levs
+              
+               o_sht(k)=0.0
+               n2_sht(k)=0.0
+               o_total(k)=0.0
+               n2_total(k)=0.0
+          
+               o_sht(k)=(con_boltz*ttg(i,lan,k))/(con_amo1*grav_150k) 
+               n2_sht(k)=(con_boltz*ttg(i,lan,k))/(con_amn2*grav_150k) 
+
+               o_total(k)=rqg(i,lan,k+levs3)*o_sht(k)
+               n2_total(k)=n2g(i,lan,k)*n2_sht(k)
+
+               if(n2_total(k).lt.n2_target) then
+                  n2_levr=log(n2_target/n2_total(k))/
+     &                    log(n2_total(k-1)/n2_total(k))
+
+                  o_target=o_total(k)*
+     &                     exp(n2_levr*log(o_total(k-1)/o_total(k)))
+  
+                  o_n2(i,lan)=o_target/n2_target
+
+                  exit 
+
+                end if
+            end do    ! lev loop
+         end do  !  lon loop
+       end do    !  lan loop
 ! =============================
+
+            
+
 ! -------------------------------------------------------------------
        do lan=1,lats_node_a  
 !

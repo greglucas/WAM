@@ -1,5 +1,5 @@
-! Apr 06 2012 Henry Juang, initial implement for nems
-! Dec    2012    Jun Wang, move init out of column physics
+! Apr 06 2012   Henry Juang, initial implement for nems
+! Dec    2012   Jun Wang, move init out of column physics
 !
 !====================================================================
 ! Nov    2015   VAY  SUB-NE IDEA_ION_INIT(levs) & idea_ion_input.f 
@@ -9,7 +9,10 @@
 !               include the seasonal variation and semiannual variation of the
 !               Joule Heating.
 ! Mar    2018   Zhuxiao Li and Tzu-Wei Fang add the new features to put
-! the driving parameters into the idea_geteb before call get_efield. 
+!               the driving parameters into the idea_geteb before call get_efield.
+! Sep    2019   Zhuxiao Li and Tim Fuller-Rowell add the criteria(st_fac>5000) 
+!               of VBz(swvel*swbz) to contrain the Joule heating amount during 
+!               intense storm time.    
 !====================================================================
 !=                    GetIonParams                      =
 !
